@@ -7,6 +7,13 @@ body {
     background-color: #97c9f8;
 }
 
+.container {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+}
+
 h1 {
     margin-bottom: 0;
 }
@@ -15,10 +22,31 @@ h2 {
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
+    border-bottom: 2px solid #e1e8ef;
+    padding-bottom: 0.25rem;
 }
 
-.highlight {
-    color: #c0392b; /* червоний акцент */
+h3 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.header .title {
+    margin: 0.15rem 0;
+    font-weight: bold;
+    color: #34495e;
+}
+
+.header .contacts {
+    margin: 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.period {
+    margin: 0.1rem 0 0.4rem;
+    color: #777;
+    font-size: 0.9rem;
 }
 
 .section {
@@ -29,6 +57,19 @@ h2 {
 .education-item,
 .project-item {
     margin-bottom: 0.75rem;
+}
+
+.project-item {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+/* Декоратор підсвічування недавніх проєктів */
+.highlight {
+    color: #c0392b; /* червоний акцент */
+    background-color: #fdecea;
+    border-left: 3px solid #c0392b;
+    font-weight: bold;
 }
 
 ul.skills-list {

@@ -1,33 +1,58 @@
 /**
- * Патерн Composite (Компоновщик)
+ * Патерн Composite (Компоновщик).
  *
- * Блок досвіду роботи, який містить дочірні блоки проєктів
+ * ExperienceBlock — контейнерний вузол: він рендерить секцію Experience
+ * і рекурсивно додає дочірні ProjectBlock (листові вузли). Кожен проєкт
+ * з прапорцем isRecent обгортається у HighlightDecorator, який додає
+ * візуальне виділення, не змінюючи логіки рендеру самого проєкту.
  */
 
-import { Experience, Project } from "../models/ResumeModel";
+import { Experience } from "../models/ResumeModel";
 import { IBlock } from "./BlockFactory";
 import { ProjectBlock } from "./ProjectBlock";
 import { HighlightDecorator } from "../decorators/HighlightDecorator";
 
 export class ExperienceBlock implements IBlock {
-  constructor(private d: Experience) {}
+  constructor(private items: Experience[]) {}
 
-  /**
-   * Рендеринг блоку досвіду роботи
-   *
-   * TODO: Реалізуйте метод render(), який створює DOM-елементи для секції досвіду
-   * та використовує патерн Composite для рендерингу проєктів всередині цієї секції.
-   */
   render(): HTMLElement {
-    // Створюємо контейнер для досвіду роботи
     const container = document.createElement("section");
     container.className = "section experience";
-    container.innerHTML = "<h2>Experience</h2>";
 
-    // TODO: Для кожного досвіду створити div.experience-item з innerHTML (позиція, компанія, період)
-    // TODO: Додати проєкти (ProjectBlock, HighlightDecorator) до цього div
-    // TODO: Додати всі experience-item до секції
+    const h2 = document.createElement("h2");
+    h2.textContent = "Experience";
+    container.appendChild(h2);
+
+    for (const exp of this.items) {
+      container.appendChild(this.renderItem(exp));
+    }
 
     return container;
+  }
+
+  /** Рендерить одну позицію разом з її дочірніми проєктами. */
+  private renderItem(exp: Experience): HTMLElement {
+    const item = document.createElement("div");
+    item.className = "experience-item";
+
+    const heading = document.createElement("h3");
+    heading.textContent = `${exp.position} — ${exp.company}`;
+
+    const period = document.createElement("p");
+    period.className = "period";
+    period.textContent = `${exp.start} – ${exp.end}`;
+
+    item.append(heading, period);
+
+    // Composite: дочірні ProjectBlock; Decorator: підсвічування недавніх.
+    for (const project of exp.projects) {
+      const leaf: IBlock = new ProjectBlock(project);
+      const block: IBlock = project.isRecent
+        ? new HighlightDecorator(leaf)
+        : leaf;
+      item.appendChild(block.render());
+    }
+
+    return item;
   }
 }
